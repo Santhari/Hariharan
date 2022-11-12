@@ -1,0 +1,48 @@
+%% MATLAB implementation of GWO
+%% 
+clear 
+close all;
+clc;
+%% Select Fitness Function 
+n=30; %Grey wolf Population (Population Size)
+Function_name='F10'; 
+Max_iteration=500; % Maximum numbef of iterations
+%% Load details of the selected benchmark function
+[lb,ub,dim,fobj]=Get_Functions_details(Function_name);
+%% Initialization 
+Positions=initialization(n,dim,ub,lb);
+%%
+tic
+[a,Best_score,Best_pos,GWO_cg_curve]=GWO(n,Max_iteration,lb,ub,dim,fobj,Positions);
+toc
+%%
+%Draw search space
+figure(1)
+func_plot(Function_name);
+title('Parameter space')
+xlabel('x_1');
+ylabel('x_2');
+zlabel([Function_name,'( x_1 , x_2 )'])
+
+%Draw objective space
+figure(2)
+plot(GWO_cg_curve,'Color','r')
+title('Objective space')
+xlabel('Iteration');
+ylabel('Objective function (Fitness)');
+axis tight
+grid on
+box on
+legend('GWO')
+display(['The best solution obtained by GWO is : ', num2str(Best_pos)]);
+display(['The best optimal value of the objective funciton found by GWO is : ', num2str(Best_score)]);
+%% Analysis of a 
+figure
+scatter(1:250,a(1:250),'r*')
+hold on
+scatter(251:500,a(251:500),'bs')
+box on
+ylabel('a')
+xlabel('Iteration')
+hold off
+
